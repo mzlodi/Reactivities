@@ -8,11 +8,11 @@ namespace API.Controllers
     public class ActivitiesController : BaseApiController
     {
         [HttpGet]
-        public async Task<IActionResult> GetActivities()
+        public async Task<IActionResult> GetActivities([FromQuery] ActivityParams param)
         {
-            return HandleResult(await Mediator.Send(new List.Query()));
+            return HandlePagedResult(await Mediator.Send(new List.Query { Params = param }));
         }
-        
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetActivity(Guid id)
         {
@@ -37,13 +37,13 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteActivity(Guid id)
         {
-            return HandleResult(await Mediator.Send(new Delete.Command {Id = id}));
+            return HandleResult(await Mediator.Send(new Delete.Command { Id = id }));
         }
 
         [HttpPost("{id}/attend")]
         public async Task<IActionResult> Attend(Guid Id)
         {
-            return HandleResult(await Mediator.Send(new UpdateAttendance.Command{Id = Id}));
+            return HandleResult(await Mediator.Send(new UpdateAttendance.Command { Id = Id }));
         }
     }
 }
